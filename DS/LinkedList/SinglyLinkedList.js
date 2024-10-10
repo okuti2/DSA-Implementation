@@ -1,46 +1,98 @@
+class Node{
+    constructor(val){
+        this.val = val;
+        this.next = null;
+    }
+}
 class SinglyLinkedList {
     constructor() {
         this.head = null;
         this.tail = null;
+        this.length = 0;
     }
 
-    addNode(value) {
-        const newNode = {
-            value,
-            next: null
-        }
+    push(value) { // add node to end
+        const newNode = new Node(value);
 
         if (!this.head) {
             this.head = newNode;
-            this.tail = newNode;
-        } else {
+            this.tail = null;
+            return;
+        }else{
             this.tail.next = newNode;
             this.tail = newNode;
         }
+        this.length++;
+        return this;
+
     }
 
-    removeNode(value) {
-        if (!this.head) {
-            return null;
+    pop(){ // remove last node
+        if(!this.head) return undefined;
+        let current = this.head;
+        let newTail = current;
+        while(current.next){
+            newTail = current;
+            current = current.next;
         }
 
-        let currentNode = this.head;
+        this.tail = newTail;
+        this.tail.next = null;
+        this.length--;
 
-        if (currentNode.value === value) {
-            this.head = currentNode.next;
-            return currentNode;
+        if(this.length === 0){
+            this.head = null;
+            this.tail = null;
         }
+        return current;
+    }
 
-        while (currentNode.next) {
-            if (currentNode.next.value === value) {
-                const removedNode = currentNode.next;
-                currentNode.next = currentNode.next.next;
-                return removedNode;
-            }
-            currentNode = currentNode.next;
+    shift(){ // remove first node
+        if(!this.head) return undefined;
+        let currentHead = this.head;
+        this.head = currentHead.next;
+        this.length--;
+        if(this.length === 0){
+            this.tail = null;
         }
+        return currentHead;
+    }
 
-        return null;
+    unshift(value){ // add node to beginning
+        const newNode = new Node(value);
+        if(!this.head){
+            this.head = newNode;
+            this.tail = this.head;
+        }else{
+            newNode.next = this.head;
+            this.head = newNode;
+        }
+        this.length++;
+        return this;
+    }
+
+    get(index){
+        if(index < 0 || index >= this.length) return null;
+        let counter = 0;
+        let current = this.head;
+        while(counter !== index){
+            current = current.next;
+            counter++;
+        }
+        return current;
+    }
+
+    set(index, value){
+        let foundNode = this.get(index);
+        if(foundNode){
+            foundNode.val = value;
+            return true;
+        }
+        return false;
+    }
+
+    insert(index, value){
+        
     }
 
     printList() {
