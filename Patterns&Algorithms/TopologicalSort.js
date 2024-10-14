@@ -10,7 +10,29 @@ that is, if it is a directed acyclic graph (DAG).
     pick an unvisited node
     begin to visit node, do a depth first search on the node exploring only unvisited nodes
     on the recursive callback of the depth first search, add the current node to the topological ordering in reverse order
-    
-
-
 */
+
+function TopologicalSort(graph){
+    let visited = new Set();
+    let topologicalOrder = [];
+    
+    for(let node in graph){
+        if(!visited.has(node)){
+            DFS(node);
+        }
+    }
+    
+    function DFS(node){
+        visited.add(node);
+        
+        for(let neighbour of graph[node]){
+            if(!visited.has(neighbour)){
+                DFS(neighbour);
+            }
+        }
+        
+        topologicalOrder.push(node);
+    }
+    
+    return topologicalOrder.reverse();
+}

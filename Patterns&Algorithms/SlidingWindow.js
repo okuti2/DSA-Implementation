@@ -11,3 +11,24 @@ function SlidingWindow(arr, k){
 
     return maxSum;
 }
+
+function lengthOfLongestSubstringTwodistinct(str){
+    var result = 0
+    var counts = new Map();
+    var left = 0
+
+    for(let right=0; right<str.length; right++){
+        counts.set(str[right], 1+(counts.get(str[right]) || 0))
+
+        while(counts.size > 2){
+            if(counts.get(str[left]) > 1){
+                counts.set(str[left], 1- (counts.get(str[right]) || 0))
+            }else{
+                counts.delete(str[left])
+            }
+            left++
+        }
+        result = Math.max(result, right-left+1)
+    }
+    return result
+}
